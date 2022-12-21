@@ -3,12 +3,11 @@ package com.salon.SpringServer.controller;
 import com.salon.SpringServer.model.Cosmetic;
 import com.salon.SpringServer.model.dto.CosmeticDto;
 import com.salon.SpringServer.service.CosmeticService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 

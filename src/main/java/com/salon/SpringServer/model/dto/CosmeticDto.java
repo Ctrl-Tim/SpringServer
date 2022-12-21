@@ -10,7 +10,6 @@ public class CosmeticDto {
     private Long id;
     private String name;
     private float price;
-    private PlainReceiptDto plainReceiptDto;
 
     public static CosmeticDto from(Cosmetic cosmetic) {
         CosmeticDto cosmeticDto = new CosmeticDto();
@@ -42,13 +41,5 @@ public class CosmeticDto {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public PlainReceiptDto getPlainReceiptDto() {
-        return plainReceiptDto;
-    }
-
-    public void setPlainReceiptDto(PlainReceiptDto plainReceiptDto) {
-        this.plainReceiptDto = plainReceiptDto;
     }
 }

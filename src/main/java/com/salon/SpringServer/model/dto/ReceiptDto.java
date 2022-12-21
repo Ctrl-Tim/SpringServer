@@ -2,6 +2,7 @@ package com.salon.SpringServer.model.dto;
 
 import com.salon.SpringServer.model.Cosmetic;
 import com.salon.SpringServer.model.Receipt;
+import com.salon.SpringServer.model.ReceiptDetail;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,15 +13,16 @@ import java.util.stream.Collectors;
 @Data
 public class ReceiptDto {
     private Long id;
-    private String name;
     private LocalDateTime date;
-    private List<CosmeticDto> cosmeticsDto = new ArrayList<>();
+    private float total;
+    private List<ReceiptDetailDto> cosmetics = new ArrayList<>();
 
     public static ReceiptDto from(Receipt receipt) {
         ReceiptDto receiptDto = new ReceiptDto();
         receiptDto.setId(receipt.getId());
         receiptDto.setDate(receipt.getDate());
-        receiptDto.setCosmeticsDto(receipt.getCosmetics().stream().map(CosmeticDto::from).collect(Collectors.toList()));
+        receiptDto.setTotal(receipt.getTotal());
+        receiptDto.setCosmetics(receipt.getCosmetics().stream().map(ReceiptDetailDto::from).collect(Collectors.toList()));
         return receiptDto;
     }
 
@@ -32,14 +34,6 @@ public class ReceiptDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDateTime getDate() {
         return date;
     }
@@ -48,11 +42,21 @@ public class ReceiptDto {
         this.date = date;
     }
 
-    public List<CosmeticDto> getCosmeticsDto() {
-        return cosmeticsDto;
+    public float getTotal() {
+        return total;
     }
 
-    public void setCosmeticsDto(List<CosmeticDto> cosmeticsDto) {
-        this.cosmeticsDto = cosmeticsDto;
+    public void setTotal(float total) {
+        this.total = total;
     }
+
+    public List<ReceiptDetailDto> getCosmetics() {
+        return cosmetics;
+    }
+
+    public void setCosmetics(List<ReceiptDetailDto> cosmetics) {
+        this.cosmetics = cosmetics;
+    }
+
+    public void addCosmetic(ReceiptDetailDto receiptDetailDto) { cosmetics.add(receiptDetailDto); }
 }

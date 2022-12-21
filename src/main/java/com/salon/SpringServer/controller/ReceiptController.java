@@ -3,9 +3,8 @@ package com.salon.SpringServer.controller;
 import com.salon.SpringServer.model.Receipt;
 import com.salon.SpringServer.model.dto.ReceiptDto;
 import com.salon.SpringServer.service.ReceiptService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,17 +55,20 @@ public class ReceiptController {
         return new ResponseEntity<>(ReceiptDto.from(receipt), HttpStatus.OK);
     }
 
-    @PostMapping(value = "{receiptId}/cosmetics/{cosmeticId}/add")
+    @PostMapping(value = "{receiptId}/cosmetics/{cosmeticId}/{count}/add")
     public ResponseEntity<ReceiptDto> addCosmeticToReceipt(@PathVariable final Long receiptId,
-                                                           @PathVariable final Long cosmeticId) {
-        Receipt receipt = receiptService.addCosmeticToReceipt(receiptId, cosmeticId);
+                                                           @PathVariable final Long cosmeticId,
+                                                           @PathVariable final int count) {
+        Receipt receipt = receiptService.addCosmeticToReceipt(receiptId, cosmeticId, count);
         return new ResponseEntity<>(ReceiptDto.from(receipt), HttpStatus.OK);
     }
+
+    /*
 
     @DeleteMapping(value = "{receiptId}/cosmetics/{cosmeticId}/remove")
     public ResponseEntity<ReceiptDto> removeCosmeticFromReceipt(@PathVariable final Long receiptId,
                                                            @PathVariable final Long cosmeticId) {
         Receipt receipt = receiptService.removeCosmeticFromReceipt(receiptId, cosmeticId);
         return new ResponseEntity<>(ReceiptDto.from(receipt), HttpStatus.OK);
-    }
+    } */
 }

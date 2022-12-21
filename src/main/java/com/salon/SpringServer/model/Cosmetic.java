@@ -5,29 +5,33 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "Cosmetic")
+@Table(name = "cosmetics")
 public class Cosmetic {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private float price;
-    @ManyToOne
-    private Receipt receipt;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cosmetic")
+    private List<ReceiptDetail> receiptDetails = new ArrayList<>();
 
-    public Cosmetic() {
-
-    }
+    public Cosmetic() { }
 
     public static Cosmetic from(CosmeticDto cosmeticDto) {
         Cosmetic cosmetic = new Cosmetic();
         cosmetic.setName(cosmeticDto.getName());
         cosmetic.setPrice(cosmeticDto.getPrice());
         return cosmetic;
+    }
+
+    public void addReceipt(ReceiptDetail receipt) {
+        this.receiptDetails.add(receipt);
     }
 
     public Long getId() {
@@ -54,11 +58,11 @@ public class Cosmetic {
         this.price = price;
     }
 
-    public Receipt getReceipt() {
-        return receipt;
+    public List<ReceiptDetail> getReceiptDetails() { return receiptDetails; }
+
+    public void setReceiptDetails(List<ReceiptDetail> receipts) {
+        this.receiptDetails = receipts;
     }
 
-    public void setReceipt(Receipt receipt) {
-        this.receipt = receipt;
-    }
+    public void addCosmeticReceipt(ReceiptDetail cosmeticReceipt) { this.receiptDetails.add(cosmeticReceipt); }
 }

@@ -1,37 +1,37 @@
 package com.salon.SpringServer.model;
 
+import com.salon.SpringServer.model.dto.ReceiptDetailDto;
 import com.salon.SpringServer.model.dto.ReceiptDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "Receipt")
+@Table(name = "receipts")
 public class Receipt {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    public LocalDateTime date;
+    private LocalDateTime date;
+    private float total;
 
-    @OneToMany (cascade = CascadeType.ALL)
-    @JoinColumn(name = "cosmetic_id")
-    private List<Cosmetic> cosmetics = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "receipt", cascade = CascadeType.ALL)
+    private List<ReceiptDetail> cosmetics = new ArrayList<>();
 
-    public void addCosmetic(Cosmetic cosmetic) {
-        cosmetics.add(cosmetic);
-    }
-
-    public void removeCosmetic(Cosmetic cosmetic){
-        cosmetics.remove(cosmetic);
-    }
+    public Receipt () { }
 
     public static Receipt from(ReceiptDto receiptDto) {
         Receipt receipt = new Receipt();
         receipt.setDate(receiptDto.getDate());
+        receipt.setTotal(receiptDto.getTotal());
+        receipt.setCosmetics(receiptDto.getCosmetics().stream().map(ReceiptDetail::from).collect(Collectors.toList()));
         return receipt;
     }
 
@@ -51,11 +51,23 @@ public class Receipt {
         this.date = date;
     }
 
-    public List<Cosmetic> getCosmetics() {
-        return cosmetics;
+    public float getTotal() {
+        return total;
     }
 
-    public void setCosmetics(List<Cosmetic> cosmetics) {
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public List<ReceiptDetail> getCosmetics() { return cosmetics; }
+
+    public void setCosmetics(List<ReceiptDetail> cosmetics) {
         this.cosmetics = cosmetics;
     }
+
+    public void addCosmeticReceipt(ReceiptDetail receiptDetail) {
+        cosmetics.add(receiptDetail);
+    }
+
+    public void removeCosmeticReceipt(ReceiptDetail receiptDetail) { cosmetics.remove(receiptDetail); }
 }
