@@ -1,7 +1,5 @@
 package com.salon.SpringServer.model.dto;
 
-import com.salon.SpringServer.model.Cosmetic;
-import com.salon.SpringServer.model.Receipt;
 import com.salon.SpringServer.model.ReceiptDetail;
 import lombok.Data;
 
@@ -9,13 +7,15 @@ import lombok.Data;
 public class ReceiptDetailDto {
     private Long id;
     private String cosmeticName;
+    private float price;
     private int count;
     private float subtotal;
 
     public static ReceiptDetailDto from(ReceiptDetail rd) {
         ReceiptDetailDto rdd = new ReceiptDetailDto();
-        rdd.setId(rd.getId());
+        rdd.setId(rd.getCosmetic().getId());
         rdd.setCosmeticName(rd.getCosmetic().getName());
+        rdd.setPrice(rd.getCosmetic().getPrice());
         rdd.setCount(rd.getCount());
         rdd.setSubtotal(rd.getCosmetic().getPrice()*rd.getCount());
         return rdd;
@@ -43,6 +43,14 @@ public class ReceiptDetailDto {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public float getSubtotal() {

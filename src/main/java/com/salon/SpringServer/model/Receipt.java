@@ -1,5 +1,9 @@
 package com.salon.SpringServer.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.salon.SpringServer.model.dto.ReceiptDetailDto;
 import com.salon.SpringServer.model.dto.ReceiptDto;
 import jakarta.persistence.*;
@@ -70,4 +74,14 @@ public class Receipt {
     }
 
     public void removeCosmeticReceipt(ReceiptDetail receiptDetail) { cosmetics.remove(receiptDetail); }
+
+    public void SumTotal() {
+        if (cosmetics != null) {
+            float sum = 0;
+            for (ReceiptDetail d : cosmetics) {
+                sum += d.getSubtotal();
+            }
+            this.total = sum;
+        }
+    }
 }

@@ -3,17 +3,12 @@ package com.salon.SpringServer.service;
 import com.salon.SpringServer.model.Cosmetic;
 import com.salon.SpringServer.model.Receipt;
 import com.salon.SpringServer.model.ReceiptDetail;
-import com.salon.SpringServer.model.dto.ReceiptDetailDto;
-import com.salon.SpringServer.model.exception.CosmeticIsAlreadyAssignedException;
 import com.salon.SpringServer.model.exception.ReceiptNotFoundException;
-import com.salon.SpringServer.repository.CosmeticRepository;
-import com.salon.SpringServer.repository.ReceiptDetailRepository;
 import com.salon.SpringServer.repository.ReceiptRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -57,37 +52,59 @@ public class ReceiptService {
     public Receipt editReceipt(Long id, Receipt receipt) {
         Receipt receiptToEdit = getReceipt(id);
         receiptToEdit.setDate(receipt.getDate());
+        receiptToEdit.setTotal(receipt.getTotal());
+        receiptToEdit.setCosmetics(receipt.getCosmetics());
         return receiptToEdit;
     }
 
     @Transactional
     public Receipt addCosmeticToReceipt(Long receiptId, Long cosmeticId, int count) {
         Receipt receipt = getReceipt(receiptId);
-//        ReceiptDetail receiptDetail = receiptDetailService.getReceiptDetail(detailId);
-//        if (Objects.nonNull(receiptDetail.getReceipt())) {
-//            throw new CosmeticIsAlreadyAssignedException(detailId, receiptDetail.getReceipt().getId());
-//        }
-
-
-
         Cosmetic cosmetic = cosmeticService.getCosmetic(cosmeticId);
+
+        for (ReceiptDetail d : receipt.getCosmetics()) {
+            if (d.getCosmetic().getId() == cosmeticId) {
+                int prev_count = d.getCount();
+                removeCosmeticFromReceipt(receiptId, cosmeticId);
+                ReceiptDetail edit_detail = new ReceiptDetail();
+                edit_detail.setReceipt(receipt);
+                edit_detail.setCosmetic(cosmetic);
+                edit_detail.setCount(prev_count + count);
+                edit_detail.setSubtotal(cosmetic.getPrice() * (prev_count + count));
+                receipt.addCosmeticReceipt(edit_detail);
+                receipt.SumTotal();
+                return receipt;
+            }
+        }
         ReceiptDetail detail = new ReceiptDetail();
         detail.setReceipt(receipt);
         detail.setCosmetic(cosmetic);
         detail.setCount(count);
         detail.setSubtotal(cosmetic.getPrice() * count);
-
         receipt.addCosmeticReceipt(detail);
+        receipt.SumTotal();
         return receipt;
     }
-
-    /*
 
     @Transactional
     public Receipt removeCosmeticFromReceipt(Long receiptId, Long cosmeticId) {
         Receipt receipt = getReceipt(receiptId);
-        Cosmetic cosmetic = cosmeticService.getCosmetic(cosmeticId);
-        receipt.removeCosmetic(cosmetic);
+        ReceiptDetail detail = new ReceiptDetail();
+        for (ReceiptDetail d : receipt.getCosmetics()) {
+            if (d.getCosmetic().getId() == cosmeticId) {
+                detail = d;
+            }
+        }
+        receipt.removeCosmeticReceipt(detail);
+        receiptDetailService.deleteReceiptDetail(detail.getId());
+        receipt.SumTotal();
         return receipt;
-    } */
+    }
+
+    @Transactional
+    public ReceiptDetail removeCosmeticFromReceipt(Long detailId) {
+        ReceiptDetail receiptDetail = receiptDetailService.getReceiptDetail(detailId);
+        receiptDetailService.deleteReceiptDetail(receiptDetail.getId());
+        return receiptDetail;
+    }
 }

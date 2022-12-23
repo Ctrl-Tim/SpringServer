@@ -1,9 +1,7 @@
 package com.salon.SpringServer.service;
 
-import com.salon.SpringServer.model.Cosmetic;
 import com.salon.SpringServer.model.ReceiptDetail;
 import com.salon.SpringServer.model.exception.CosmeticNotFoundException;
-import com.salon.SpringServer.repository.CosmeticRepository;
 import com.salon.SpringServer.repository.ReceiptDetailRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +38,7 @@ public class ReceiptDetailService {
                 new CosmeticNotFoundException(id));
     }
 
+    @Transactional
     public ReceiptDetail deleteReceiptDetail(Long id) {
         ReceiptDetail receiptDetail = getReceiptDetail(id);
         receiptDetailRepository.delete(receiptDetail);

@@ -1,8 +1,6 @@
 package com.salon.SpringServer.model.dto;
 
-import com.salon.SpringServer.model.Cosmetic;
 import com.salon.SpringServer.model.Receipt;
-import com.salon.SpringServer.model.ReceiptDetail;
 import lombok.Data;
 
 import java.time.LocalDateTime;

@@ -1,5 +1,6 @@
 package com.salon.SpringServer.model;
 
+import com.salon.SpringServer.model.dto.DistributionDetailDto;
 import com.salon.SpringServer.model.dto.ReceiptDetailDto;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,8 +9,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
-@Table(name = "receipt_details")
-public class ReceiptDetail {
+@Table(name = "distribution_details")
+public class DistributionDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,19 +21,18 @@ public class ReceiptDetail {
     private Cosmetic cosmetic;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "receipt_id")
-    private Receipt receipt;
+    @JoinColumn(name = "distribution_id")
+    private Distribution distribution;
 
     private int count;
-    private float subtotal;
 
-    public ReceiptDetail() { }
+    public DistributionDetail() {}
 
-    public static ReceiptDetail from(ReceiptDetailDto rdd) {
-        ReceiptDetail rd = new ReceiptDetail();
-        rd.setCount(rdd.getCount());
-        rd.setSubtotal(rdd.getSubtotal());
-        return rd;
+    public static DistributionDetail from(DistributionDetailDto ddd) {
+        DistributionDetail dd = new DistributionDetail();
+        dd.setId(ddd.getId());
+        dd.setCount(ddd.getCount());
+        return dd;
     }
 
     public Long getId() {
@@ -51,12 +51,12 @@ public class ReceiptDetail {
         this.cosmetic = cosmetic;
     }
 
-    public Receipt getReceipt() {
-        return receipt;
+    public Distribution getDistribution() {
+        return distribution;
     }
 
-    public void setReceipt(Receipt receipt) {
-        this.receipt = receipt;
+    public void setDistribution(Distribution distribution) {
+        this.distribution = distribution;
     }
 
     public int getCount() {
@@ -65,13 +65,5 @@ public class ReceiptDetail {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public float getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(float subtotal) {
-        this.subtotal = subtotal;
     }
 }

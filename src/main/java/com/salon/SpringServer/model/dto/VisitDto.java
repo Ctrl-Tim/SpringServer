@@ -10,13 +10,18 @@ import java.time.LocalDateTime;
 public class VisitDto {
     private Long id;
     public LocalDateTime date;
-    private Distribution distribution;
+    private Long distribution_id;
 
     public static VisitDto from(Visit visit) {
         VisitDto visitDto = new VisitDto();
         visitDto.setId(visit.getId());
         visitDto.setDate(visit.getDate());
-        visitDto.setDistribution(visit.getDistribution());
+        if (visit.getDistribution() != null) {
+            visitDto.setDistribution(visit.getDistribution().getId());
+        }
+        else {
+            visit.setDistribution(null);
+        }
         return visitDto;
     }
 
@@ -36,11 +41,11 @@ public class VisitDto {
         this.date = date;
     }
 
-    public Distribution getDistribution() {
-        return distribution;
+    public Long getDistribution() {
+        return distribution_id;
     }
 
-    public void setDistribution(Distribution distribution) {
-        this.distribution = distribution;
+    public void setDistribution(Long distribution_id) {
+        this.distribution_id = distribution_id;
     }
 }

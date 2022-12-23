@@ -2,7 +2,10 @@ package com.salon.SpringServer.model;
 
 import com.salon.SpringServer.model.dto.VisitDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NonNull;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 
@@ -13,9 +16,11 @@ public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
     public LocalDateTime date;
 
-    @OneToOne(mappedBy = "visit")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "visit", optional=true)
     private Distribution distribution;
 
     public Visit() { }
@@ -23,7 +28,6 @@ public class Visit {
     public static Visit from(VisitDto visitDto) {
         Visit visit = new Visit();
         visit.setDate(visitDto.getDate());
-        visit.setDistribution(visitDto.getDistribution());
         return visit;
     }
 

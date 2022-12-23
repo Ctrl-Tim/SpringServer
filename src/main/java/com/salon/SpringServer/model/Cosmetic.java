@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -18,7 +16,7 @@ public class Cosmetic {
     private Long id;
     private String name;
     private float price;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cosmetic")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cosmetic", cascade = CascadeType.REMOVE)
     private List<ReceiptDetail> receiptDetails = new ArrayList<>();
 
     public Cosmetic() { }
