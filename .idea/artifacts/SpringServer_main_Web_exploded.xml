@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SpringServer.main:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SpringServer_main_Web_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SpringServer.main" />
+        </element>
+      </element>
+      <element id="module-output" name="SpringServer" />
+      <element id="module-test-output" name="SpringServer.test" />
+      <element id="module-output" name="SpringServer.main" />
+    </root>
+  </artifact>
+</component>

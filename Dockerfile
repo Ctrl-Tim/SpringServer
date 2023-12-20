@@ -9,9 +9,7 @@ ENV SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
 ENV SPRING_DATASOURCE_USERNAME=sa
 ENV SPRING_DATASOURCE_PASSWORD=password
 
-ARG JAR_FILE=target/*.jar
-
-COPY --from-builder home/build/libs/SpringServer-0.0.1-SNAPSHOT.jar /SpringServer/SpringServerApplication
+COPY --from-builder /home/gradle/SpringServer/build/libs/SpringServer-0.0.1-SNAPSHOT.jar /SpringServer/SpringServerApplication.jar
 
 ENV PATH="/opt/gradle/bin:${PATH}"
 
@@ -23,4 +21,4 @@ RUN gradle clean build
 
 EXPOSE 8070
 
-CMD ["java", "-jar", "/app.jar"]
+CMD ["java", "-jar", "SpringServerApplication.jar"]
